@@ -30,7 +30,7 @@ public class ChaseAnimation : MonoBehaviour
     void Update()
     {
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
-        bool isRunning = distanceToTarget < distanceToStartRunning && distanceToTarget > distanceToStopRunning;
+        bool isRunning = distanceToTarget < distanceToStartRunning && distanceToTarget > distanceToStopRunning && isDead == false;
         currentSpeed = Mathf.Lerp(currentSpeed, isRunning ? maxSpeed : 0f, Time.deltaTime * 10f);
 
         // Update the animator parameters
@@ -71,7 +71,7 @@ public class ChaseAnimation : MonoBehaviour
 
     public void TakeDamage()
     {
-        health -= 20;
+        health -= 50;
         animator.SetTrigger("IsAttacked");
     }
 }

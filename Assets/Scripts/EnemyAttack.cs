@@ -10,10 +10,12 @@ public class EnemyAttack : MonoBehaviour
     private float nextAttackTime = 0f; // Bir sonraki saldýrý zamaný
     private Animator animator;
     private string[] attackAnimations = { "Attack", "Attack2", "Attack3", "Attack4" };
+    private ChaseAnimation chaseAnimation;
 
     void Start()
     {
         animator = GetComponent<Animator>();
+        chaseAnimation = GetComponent<ChaseAnimation>();
     }
 
     // Update is called once per frame
@@ -24,7 +26,7 @@ public class EnemyAttack : MonoBehaviour
         //ChaseAnimation chaseAnimation = FindObjectOfType<ChaseAnimation>();
 
         // Mesafe saldýrý menzili içinde ise ve saldýrý hýzý zamanýndan önce geçmiþse saldýrý animasyonunu baþlat
-        if (distanceToTarget <= attackRange && Time.time >= nextAttackTime && target.GetComponent<Movement>().IsDead() == false)
+        if (distanceToTarget <= attackRange && Time.time >= nextAttackTime && target.GetComponent<Movement>().IsDead() == false && chaseAnimation.IsDead() == false)
         {
             // Saldýrý animasyonunu baþlat
             int randomIndex = Random.Range(0, attackAnimations.Length);

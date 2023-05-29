@@ -42,35 +42,86 @@ public class Movement : MonoBehaviour
         originalStepOffset = characterController.stepOffset;
     }
 
+    private float horizontalInput;
+    private float verticalInput;
+    private Vector3 movementDirection;
+    private float inputMagnitude;
+    private float gravity;
+
+
     void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        HandleInput();
+        UpdateMovement();
+        UpdateJump();
+        UpdateGravity();
+        UpdateAnimation();
+        //CheckAttack();
+        CheckDeath();
+        //OnAnimatorMove();
+    }
+
+    void HandleInput()
+    {
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
 
         Vector3 movementDirection = new Vector3(horizontalInput, 0, verticalInput);
-        float inputMagnitude = Mathf.Clamp01(movementDirection.magnitude) / 2;
+        inputMagnitude = Mathf.Clamp01(movementDirection.magnitude) / 2;
 
-        if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
             inputMagnitude *= 2;
         }
+
         animator.SetFloat("Input Magnitude", inputMagnitude, 0.05f, Time.deltaTime);
-        
+    }
+
+    void UpdateMovement()
+    {
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+
+        movementDirection = new Vector3(horizontalInput, 0, verticalInput);
         movementDirection = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * movementDirection;
         movementDirection.Normalize();
 
-        float gravity = Physics.gravity.y * gravityMultiplier;
-        if(isJumping && ySpeed > 0 && Input.GetButton("Jump") == false)
+        if (movementDirection != Vector3.zero)
         {
-            gravity *= 2;
-        }
-        ySpeed += gravity * Time.deltaTime;
+            animator.SetBool("IsMoving", true);
+            Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            //
+            // Kameranýn yukarý/aþaðý dönüþünü kontrol et
+            //float rotationX = cameraTransform.rotation.eulerAngles.x - verticalInput * rotationSpeed * Time.deltaTime;
+            //rotationX = Mathf.Clamp(rotationX, -90f, 90f); // Kameranýn sýnýrlý bir açýyla dönmesini saðla
 
+            // Kameranýn yönünü güncelle
+            //cameraTransform.rotation = Quaternion.Euler(rotationX, cameraTransform.rotation.eulerAngles.y, cameraTransform.rotation.eulerAngles.z);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+        }
+
+        if (isGrounded == false)
+        {
+            Vector3 velocity = movementDirection * inputMagnitude * jumpHorizontalSpeed;
+            velocity.y = ySpeed;
+
+            characterController.Move(velocity * Time.deltaTime);
+        }
+
+    }
+
+    void UpdateJump()
+    {
         if (characterController.isGrounded)
         {
             lastGroundTime = Time.time;
         }
-        if(Input.GetButtonDown("Jump"))
+
+        if (Input.GetButtonDown("Jump"))
         {
             jumpButtonPressedTime = Time.time;
         }
@@ -105,60 +156,69 @@ public class Movement : MonoBehaviour
                 animator.SetBool("IsFalling", true);
             }
         }
-        
-        
-        if(movementDirection != Vector3.zero)
+    }
+
+    void UpdateGravity()
+    {
+        gravity = Physics.gravity.y * gravityMultiplier;
+
+        if (isJumping && ySpeed > 0 && !Input.GetButton("Jump"))
         {
-            animator.SetBool("IsMoving", true);
-            Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-        }
-        else
-        {
-            animator.SetBool("IsMoving", false);
+            gravity *= 2;
         }
 
-        if(isGrounded == false)
-        {
-            Vector3 velocity = movementDirection * inputMagnitude * jumpHorizontalSpeed;
-            velocity.y = ySpeed;
+        ySpeed += gravity * Time.deltaTime;
+    }
 
-            characterController.Move(velocity * Time.deltaTime);
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            int randomIndex = Random.Range(0, attackAnimations.Length);
-            animator.SetTrigger(attackAnimations[randomIndex]);
-
-            /*
-            
-            // Cast a ray to detect the enemy object
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit))
-            {
-                // Check if the raycast hit the enemy object
-                if (hit.collider.CompareTag("Enemy"))
-                {
-                    ChaseAnimation chaseAnimation = FindObjectOfType<ChaseAnimation>();
-                    chaseAnimation.TakeDamage();
-                }
-            }
-            */
-
-        }
-
+    void UpdateAnimation()
+    {
         if (health <= 0 && !isDead)
         {
             isDead = true;
             animator.SetTrigger("IsDead");
         }
 
-        if(isDead)
+        if (isDead)
         {
-            
+            // Handle death animation
         }
     }
+    /*
+    void CheckAttack()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            enemyTarget = GameObject.FindGameObjectWithTag("Enemy").transform;
+            float distanceToTarget = Vector3.Distance(transform.position, enemyTarget.position);
+
+            if (distanceToTarget <= attackRange && Time.time >= nextAttackTime)
+            {
+                int randomIndex = Random.Range(0, attackAnimations.Length);
+                animator.SetTrigger(attackAnimations[randomIndex]);
+                enemyTarget.GetComponent<ChaseAnimation>().TakeDamage();
+
+                nextAttackTime = Time.time + 1f / attackRate;
+            }
+            
+        }
+    }*/
+
+    void CheckDeath()
+    {
+        if (health <= 0 && !isDead)
+        {
+            isDead = true;
+            animator.SetTrigger("IsDead");
+        }
+
+        if (isDead)
+        {
+            // Handle death animation
+        }
+    }
+
+
+
 
     public bool IsDead()
     {
@@ -167,7 +227,7 @@ public class Movement : MonoBehaviour
 
     public void TakeDamage()
     {
-        health -= 10;
+        health -= 20;
         animator.SetTrigger("IsAttacked");
     }
 
@@ -182,6 +242,8 @@ public class Movement : MonoBehaviour
         }
     }
 
+    
+
     private void OnApplicationFocus(bool focus)
     {
         if(focus)
@@ -193,6 +255,7 @@ public class Movement : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
     }
+    
 
     /*
     private void Attack()
