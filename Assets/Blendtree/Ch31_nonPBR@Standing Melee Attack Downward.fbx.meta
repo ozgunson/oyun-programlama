@@ -1,34 +1,9 @@
 fileFormatVersion: 2
-guid: 72d8eee5a0a2fe449bd275f7c1785a89
+guid: f9e2fc48ab9c5394fb87cfb1fd467334
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch31_1001_Diffuse
-    second: {fileID: 2800000, guid: 51c67c373daa5ce468390ccc6fd45041, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch31_1001_Glossiness
-    second: {fileID: 2800000, guid: 959315289c3a7184aa385d2d49560211, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch31_1001_Normal
-    second: {fileID: 2800000, guid: 86710ddc68c2f2a40ba244aa48069e6f, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch31_1001_Specular
-    second: {fileID: 2800000, guid: 3271aa5cc015f5541b09d150a924a46e, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch31_1002_Diffuse
-    second: {fileID: 2800000, guid: 3f1e1250ffa0a3a43a162f6e356ac15d, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -58,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: mixamo.com
+      name: Standing Melee Attack Downward
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 1
+      lastFrame: 68
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -73,8 +48,8 @@ ModelImporter:
       loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
@@ -129,26 +104,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - 430be64992bbc7c44bc2b74466ddebe3
-  - 834cd0d14d1833c4a959a5995b5cd294
-  - 7db0d1e2ed08689479b9c76e1c962ae1
-  - 40b094f20df706d4aaa4f0e669cadee3
-  - ae844b53d8e925e4a9c0a9b4127846cb
-  - f14f412e3b719854992bdafac82960e6
-  - 026bb4f91e743d84c8ee6d0dd24a1162
-  - 8b9290e72eca8e64ca857d3969e913d8
-  - c7bfc5bb167fe844dacb3cbbf7deb53b
-  - a82ce7a39db2fb34391dfa58ff5f2272
-  - f620fd2ee6b100b4bb9b8a08ee1c7922
-  - e5fa48cad302e88459b9f1c6ee23e53e
-  - fca8dfd1ab578ac46a708c8a1ef7c915
-  - f971e7925f8745c48a9b1bec7b456dd6
-  - d5c56d1b6ab10654f9ca9e8bbbf04010
-  - d9c1cf06d8b81744198f051e26d22ced
-  - f9e2fc48ab9c5394fb87cfb1fd467334
-  - 9ffeaa422573ec543a4b554164b7b9bd
-  - 4e4cdb957f307834799609aa2703ba91
+  referencedClips: []
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
@@ -947,11 +903,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 72d8eee5a0a2fe449bd275f7c1785a89, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0

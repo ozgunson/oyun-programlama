@@ -59,6 +59,7 @@ public class Movement : MonoBehaviour
         //CheckAttack();
         CheckDeath();
         //OnAnimatorMove();
+        //MeleeAttack();
     }
 
     void HandleInput()
@@ -255,7 +256,20 @@ public class Movement : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
     }
-    
+
+    /*
+    void MeleeAttack()
+    {
+        if(Input.GetKey(KeyCode.T))
+        {
+            animator.SetTrigger("AttackHorizontal");
+        }
+        if(Input.GetKey(KeyCode.Y))
+        {
+            animator.SetTrigger("AttackDownward");
+        }
+    }
+    */
 
     /*
     private void Attack()

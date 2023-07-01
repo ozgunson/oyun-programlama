@@ -12,9 +12,12 @@ public class ChaseAnimation : MonoBehaviour
     public float maxSpeed = 6f;
     public float distanceToStartRunning = 10f;
     public float distanceToStopRunning = 5f;
+    public float destroyDelay = 5f;
+    public float timer = 0f;
 
     private float health = 100;
     private bool isDead;
+    public GameObject obj;
 
     float currentSpeed;
     float currentAnimationSpeed;
@@ -24,6 +27,7 @@ public class ChaseAnimation : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        obj = GameObject.FindGameObjectWithTag("Enemy");
     }
 
     // Update is called once per frame
@@ -53,7 +57,8 @@ public class ChaseAnimation : MonoBehaviour
         if(health <= 0 && !isDead)
         {
             isDead = true;
-            animator.SetBool("IsDead", true);
+            animator.SetTrigger("IsDead");
+            
         }
         if(isDead)
         {
@@ -61,6 +66,16 @@ public class ChaseAnimation : MonoBehaviour
             isRunning = false;
             agent.isStopped = true;
             */
+            DestroyObject();
+        }
+    }
+
+    public void DestroyObject()
+    {
+        timer += Time.deltaTime;
+        if (timer >= destroyDelay)
+        {
+            Destroy(obj);
         }
     }
 

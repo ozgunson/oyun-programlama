@@ -26,7 +26,7 @@ public class PlayerAttack : MonoBehaviour
 
     void CheckAttack()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && target != null)
         {
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
